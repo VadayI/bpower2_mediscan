@@ -1,7 +1,8 @@
 import axios from 'axios';
 
-const baseURL = process.env.NODE_ENV === 'production'
-  ? '/api'                // proxy przez ten sam host+HTTPS
+const isProd = process.env.NODE_ENV === 'production';
+const baseURL = isProd
+  ? '/api'                                   // produkcja: proxy lub ten sam host
   : (process.env.REACT_APP_API_URL || 'http://localhost:8319') + '/api';
 
 const api = axios.create({ baseURL });
