@@ -48,7 +48,6 @@ export default function OCRPage() {
           headers: { 'Content-Type': 'multipart/form-data' }
         });
       }
-      console.log(response)
       setResult(response.data);
     } catch (err) {
       setError(err.response?.data?.detail || 'Błąd podczas analizy OCR.');

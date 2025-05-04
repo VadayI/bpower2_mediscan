@@ -48,7 +48,6 @@ export default function OCRPage() {
           headers: { 'Content-Type': 'multipart/form-data' }
         });
       }
-      console.log(response)
       setResult(response.data);
     } catch (err) {
       setError(err.response?.data?.detail || 'Błąd podczas analizy OCR.');
@@ -100,7 +99,7 @@ export default function OCRPage() {
             )}
         </form>
 
-        {result && result.content && (
+        {result && (
           <Box sx={{ mt: 4 }}>
           {/* Sekcja danych pacjenta */}
           <Card sx={{ mb: 3 }}>

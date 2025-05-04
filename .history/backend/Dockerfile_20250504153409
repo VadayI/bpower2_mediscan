@@ -1,0 +1,27 @@
+# Etap 1: instalacja Pythona i zależności
+FROM python:3.12-slim AS builder
+WORKDIR /app
+COPY requirements.txt .
+RUN pip install --user --no-cache-dir -r requirements.txt
+
+# Etap 2: finalny obraz
+FROM python:3.12-slim
+WORKDIR /app
+ENV PATH=/root/.local/bin:$PATH
+
+# Przenosimy pakiety z buildera
+COPY --from=builder /root/.local /root/.local
+
+# Kopiujemy cały kod backendu
+COPY . .
+
+# Static files
+RUN mkdir -p /app/staticfiles
+
+# entrypoint do migracji/collectstatic
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+ENTRYPOINT ["/entrypoint.sh"]
+
+EXPOSE 8319
+CMD ["gunicorn", "mediscan.wsgi:application", "--bind", "0.0.0.0:8319", "--timeout", "120"]

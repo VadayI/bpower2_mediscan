@@ -1,0 +1,20 @@
+# Stage 1: build
+FROM node:22-alpine AS builder
+WORKDIR /app
+
+# Instalacja zależności
+COPY package.json package-lock.json ./
+RUN npm ci
+
+# Budujemy aplikację
+COPY . .
+ARG REACT_APP_API_URL
+ENV REACT_APP_API_URL=${REACT_APP_API_URL}
+RUN npm run build
+
+# Stage 2: serwowanie statycznych plików przez Nginx
+FROM nginx:stable-alpine
+COPY --from=builder /app/build /usr/share/nginx/html
+
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]

@@ -1,0 +1,14 @@
+FROM node:22-alpine
+WORKDIR /app
+
+# Skopiuj package.json i zainstaluj zależności
+COPY package.json package-lock.json ./
+RUN npm ci
+
+# Kopiuj kod i zbuduj
+COPY . .
+RUN npm run build
+
+# Serwuj statyczne pliki
+RUN npm install -g serve
+CMD ["serve", "-s", "build", "-l", "8320"]
