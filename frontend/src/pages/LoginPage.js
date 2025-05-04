@@ -18,7 +18,7 @@ export default function LoginPage() {
       const response = await api.post('/auth/token/login/', { username, password });
       const token = response.data.auth_token || response.data.token;
       localStorage.setItem('token', token);
-      navigate('/ocr');
+      window.location.href = '/ocr';
     } catch (err) {
       setError(err.response?.data?.detail || 'Błąd logowania');
     } finally {
