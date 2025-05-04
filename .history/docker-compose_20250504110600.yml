@@ -1,0 +1,24 @@
+version: '3.9'
+
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    env_file:
+      - ../.env       # wskazuje na root/.env
+    ports:
+      - "8319:8319"
+
+  frontend:
+    image: node:22-alpine
+    working_dir: /app
+    volumes:
+      - ../frontend:/app
+      - /app/node_modules
+      - ../.env:/app/.env    # montujemy root/.env do katalogu CRA
+    ports:
+      - "8320:3000"          # host:container
+    command: sh -c "npm install && npm start"
+    depends_on:
+      - backend

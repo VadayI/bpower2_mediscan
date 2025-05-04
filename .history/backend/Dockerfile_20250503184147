@@ -1,0 +1,25 @@
+# Etap 1: budowa zależności
+FROM python:3.12-slim AS builder
+WORKDIR /app
+COPY backend/requirements.txt .
+RUN pip install --user --no-cache-dir -r requirements.txt
+
+# Etap 2: finalny obraz
+FROM python:3.12-slim
+WORKDIR /app
+ENV PATH=/root/.local/bin:$PATH
+
+# Zainstalowane pakiety z etapu builder
+COPY --from=builder /root/.local /root/.local
+
+# Kopiujemy kod backendu i statyczne pliki frontendu
+COPY backend/ .
+COPY --from=frontend-build /app/frontend/build/ ./static/
+
+# Dodanie skryptu entrypoint do inicjalizacji migracji, AppSetting i superusera
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+ENTRYPOINT ["/entrypoint.sh"]
+
+# Start aplikacji na porcie 8319
+CMD ["gunicorn", "mediscan.wsgi:application", "--bind", "0.0.0.0:8319"]
