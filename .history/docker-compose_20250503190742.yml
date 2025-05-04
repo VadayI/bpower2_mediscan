@@ -1,9 +1,0 @@
-services:
-  web:
-    build:
-      context: .    # katalog główny projektu
-      dockerfile: backend/Dockerfile
-    env_file:
-      - ./.env
-    ports:
-      - "8319:8319"
