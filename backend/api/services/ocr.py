@@ -63,7 +63,7 @@ def perform_ocr(file=None, base64_str=None, user=None):
         input=[input_entry],
         text={'format': {'type': 'json_object'}},
         tools=[],
-        temperature=0,
+        temperature=0.5,
         max_output_tokens=32768,
         top_p=1,
         store=False
