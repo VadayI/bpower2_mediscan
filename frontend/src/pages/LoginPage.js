@@ -1,10 +1,8 @@
 import React, { useState } from 'react';
 import { TextField, Button, Card, CardContent, Typography, Alert, CircularProgress } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
 import api from '../api';
 
 export default function LoginPage() {
-  const navigate = useNavigate();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
