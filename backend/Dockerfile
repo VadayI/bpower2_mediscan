@@ -24,4 +24,4 @@ RUN chmod +x /entrypoint.sh
 ENTRYPOINT ["/entrypoint.sh"]
 
 # Start aplikacji na porcie 8319
-CMD ["gunicorn", "mediscan.wsgi:application", "--bind", "0.0.0.0:8319"]
+CMD ["gunicorn", "mediscan.wsgi:application", "--bind", "0.0.0.0:8319", "--timeout", "120"]
